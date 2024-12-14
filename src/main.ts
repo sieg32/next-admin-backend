@@ -3,8 +3,11 @@ import config from './config/config';
 import userRouter from './routes/user.route'
 import projectRouter from './routes/project.route'
 import {sequelize_deals, sequelize_admin} from './config/database';
+import cors from 'cors';
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json())
 
