@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import  { AuthenticatedUser , AuthenticatedRequest} from "../types/authenticatedRequest.type";
 
-const JWT_SECRET = 'your_jwt_secret'; // Make sure to keep this secret safe
+const JWT_SECRET = process.env.JWT_SECRET || 'nvidiagt710'; // Make sure to keep this secret safe
 
-const authorize = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const authorize = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
   // Extract the token from the Authorization header
   const token = req.headers.authorization?.split(" ")[1]; // Assuming the format is "Bearer <token>"
 
@@ -18,8 +19,8 @@ const authorize = async (req: Request, res: Response, next: NextFunction): Promi
     const decoded = jwt.verify(token, JWT_SECRET);
 
     // Attach the decoded user information to the request object for further use
-    req.user = decoded; // You can modify this based on your user data structure
-
+    req.user   = decoded as AuthenticatedUser; // You can modify this based on your user data structure
+      
     // Call the next middleware or route handler
     next();
   } catch (error) {

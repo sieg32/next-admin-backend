@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { loginService, registerService } from "../services/user.service";
+import { loginService, registerService, verifyUserService } from "../services/user.service";
 import logger from "../config/logger";
+import { AuthenticatedRequest } from "../types/authenticatedRequest.type";
 
 
 export const  login = async (req:Request, res: Response) =>{
@@ -61,3 +62,19 @@ export const  register = async (req:Request, res: Response) =>{
     }
 }
 
+ export const verifyToken =async (req:AuthenticatedRequest, res:Response)=>{
+try {
+    
+    const isValid =await verifyUserService(req.user);
+    if(isValid){
+        res.status(200).json({success:false, message:'user verified'});
+    }else{
+        res.status(403).json({success:false, message:'user not verified'});
+    }
+} catch (error) {
+    logger.error(error)
+    res.status(500).json({success:false, message:"internal server error"});
+}
+
+
+ }

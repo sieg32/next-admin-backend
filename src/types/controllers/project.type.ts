@@ -46,7 +46,7 @@ export type ProjectUpdateData = {
 
 export type PropertyUnitData = {
     
-    project_id: string; // Foreign key to the Projects table
+    // project_id: string; // Foreign key to the Projects table
     property_type: string;
     bedroom_count?: number;
     bathroom_count?: number;

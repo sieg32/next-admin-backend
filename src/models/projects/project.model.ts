@@ -104,6 +104,16 @@ class Projects extends Model {
     max: number | null;
   };
 
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  land_extra?: {
+    approach: string | null;
+    distance_from_orr: string | null;
+    soil_type:string| null;
+  };
+
  
 
   // Assuming images are stored as an array of URLs

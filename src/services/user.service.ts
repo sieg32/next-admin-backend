@@ -1,6 +1,7 @@
 import  Users  from '../models/users/user.model'; // Assuming you have the Users model set up
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { AuthenticatedUser } from '../types/authenticatedRequest.type';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'nvidiagt710';
 
@@ -87,3 +88,36 @@ export async function registerService(
       throw new Error(error.message); // Return an error if something goes wrong
     }
   }
+
+
+
+export async function verifyUserService(user:AuthenticatedUser): Promise<boolean | Error> {
+  try {
+    // Fetch the user by email
+    const userData = await Users.findByPk(user.user_id);
+    
+    if (!user) {
+      throw new Error('UserNotFound');
+      
+    }
+
+    if(user.user_type === userData?.user_type){
+      return true;
+    }else{
+      return false;
+    }
+
+    // Compare the provided password with the hashed password in the database
+  
+    
+   
+    // Generate a JWT token if the credentials are valid
+    
+
+    
+  } catch (error) {
+      
+    // Return the error message if any issues arise during login
+     throw new Error(error.message);
+  }
+}

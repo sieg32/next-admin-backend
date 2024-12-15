@@ -247,7 +247,7 @@ export const addBrochureController = async (req: Request, res: Response):Promise
 
 
 
-export const addAmenityControlelr = async(req: Request, res: Response):Promise<void> => {
+export const addAmenityController = async(req: Request, res: Response):Promise<void> => {
 
   const {projectId} = req.params;
   const amenitiesArray:string[] = req.body.amenities;

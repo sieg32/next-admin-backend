@@ -1,7 +1,7 @@
 // src/routes/project.routes.ts
 
 import { Router, Request, Response } from 'express';
-import {  addBrochureController, addImages, addProjectText, getAllProjects, updateProjectTextInfo } from '../controllers/project.controller';
+import {  addAmenityController, addBrochureController, addImages, addProjectText, addPropertyUnit, getAllProjects, updateProjectTextInfo, updatePropertyUnit } from '../controllers/project.controller';
 import upload from '../middlewares/multer.middleware';
 
 const router = Router();
@@ -21,6 +21,11 @@ router.patch('/basic', updateProjectTextInfo)
 
 router.post('/images/:projectId', [upload.array('images') , addImages]);
 router.post('/brochure/:projectId', [upload.array('brochure'), addBrochureController])
+
+router.post('/propertyUnit/:projectId', addPropertyUnit);
+router.patch('/propertyUnit/:projectId', updatePropertyUnit);
+
+router.post('/amenities/:projectId', addAmenityController);
 
 
 
