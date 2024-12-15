@@ -14,6 +14,7 @@ import {
 import { ulid } from 'ulidx';
 @Table({
     tableName: 'amenityList',
+    timestamps:false
   })
   class AmenityList extends Model {
     @PrimaryKey

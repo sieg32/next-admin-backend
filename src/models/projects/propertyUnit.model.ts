@@ -39,13 +39,13 @@ import {
   
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
     })
     bedroom_count!: number;
   
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
     })
     bathroom_count!: number;
   

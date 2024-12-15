@@ -11,6 +11,7 @@ import PropertyUnit from '../models/projects/propertyUnit.model';
 import Amenities from '../models/projects/amenity.model';
 import { PropertyUnitService } from '../services/project/propertyUnit.service';
 import { AmenityService } from '../services/project/amenity.service';
+import AmenityList from '../models/amenityList.model';
 
 const projectService = new ProjectService(Projects);
 const propertyUnitService = new PropertyUnitService(PropertyUnit, Projects)
@@ -29,19 +30,19 @@ export const getAllProjects = async (req: Request, res: Response):Promise<void >
 }
 
 
-// export const getProjectById = async (req: Request, res: Response):Promise<void > => {
-//     try {
-//         const { id } = req.params;
-//         const project = await getProjectById(id);
-//         if (!project) {
-//             res.status(404).json({ error: 'Project not found' });
-//             return ;
-//         }
-//         res.json(project);
-//     } catch (error) {
-//         res.status(500).json({ error: 'Server error' });
-//     }
-// }
+export const getProjectById = async (req: Request, res: Response):Promise<void > => {
+    try {
+        const { projectId } = req.params;
+        const project = await Projects.findByPk(projectId,{include:[Images, PropertyUnit, Brochures,{model:Amenities , include:[AmenityList]} ]});
+        if (!project) {
+            res.status(404).json({ error: 'Project not found' });
+            return ;
+        }
+        res.status(200).json({success:true, data:project});
+    } catch (error) {
+        res.status(500).json({ success:false, message: 'Server error' });
+    }
+}
 
 
 
@@ -56,7 +57,7 @@ try {
 
 
     if(project.project_id){
-        res.status(201).json({success:true, message:'Created', datta: project})
+        res.status(201).json({success:true, message:'Created', data: project})
     }
 
 } catch (error) {
@@ -74,6 +75,7 @@ try {
     
   const {projectId} = req.params;
   const propertyUnitData:PropertyUnitData = req.body;
+  console.log(projectId);
   console.log(propertyUnitData)
 
     const project =await propertyUnitService.addPropertyUnitData(projectId,propertyUnitData);
@@ -192,7 +194,7 @@ export const updatePropertyUnit = async (req: Request, res: Response):Promise<vo
         const projectId =  req.params.projectId
         const imageFiles= req.files
     
-
+        console.log(imageFiles)
 
       
 
@@ -246,6 +248,19 @@ export const addBrochureController = async (req: Request, res: Response):Promise
   };
 
 
+export const getAmenityList = async (req:Request, res:Response)=>{
+  try {
+    const data =await amenityService.getAmenityList();
+    res.status(200).json({success:true, data:data})
+    
+  } catch (error) {
+    logger.error(error)
+    res.status(500).json({success:false, message:'unable to fetch amenity list'});
+  }
+
+}
+
+
 
 export const addAmenityController = async(req: Request, res: Response):Promise<void> => {
 
@@ -283,4 +298,27 @@ export const addAmenityController = async(req: Request, res: Response):Promise<v
 
 
 
+}
+
+export const updateVisibility = async(req: Request, res: Response):Promise<void> => {
+  const {projectId} = req.params;
+  const {visibility} = req.body;
+
+  try {
+
+    const project =await projectService.changeVisibility(projectId, visibility);
+
+
+    if(project){
+      res.status(200).json({success:true, message:'successfully updated'})
+    }
+    
+  } catch (error) {
+    if(error instanceof Error && error.message === 'NoUpdate'){
+      res.status(401).json({success:false, message:'no updates'})
+    }else{
+      res.status(500).json({success:false, message:'error occured while updating'})
+    }
+    
+  }
 }

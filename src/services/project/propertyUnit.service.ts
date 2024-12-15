@@ -36,7 +36,8 @@ export class PropertyUnitService {
             logger.error(error)
             throw new Error('ProjectNotFound')
           }else{
-            logger.error(error)
+            // logger.error(error)
+            console.log(error)
             throw new Error('InternalServerError')
           }
         }

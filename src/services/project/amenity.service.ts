@@ -13,7 +13,17 @@ export class AmenityService {
         this.AmenityList = AmenityList;
     }
 
+    public async getAmenityList(){
+        try {
+            
+            const data =await this.AmenityList.findAll();
+            return data;
+        } catch (error) {
+            logger.error('error while fetching amenity list',error)
+            throw new Error('internalError')
+        }
 
+    }
 
     public async addAmenity(projectId:string, amenitiesArray:string[]){
       

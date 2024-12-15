@@ -16,37 +16,17 @@ export class ProjectService {
 
     public async addProjectText(projectData:any){
         try {
-            const {
-              name,
-              description,
-              type,
-              status,
-              location,
-              start_date,
-              completion_date,
-              total_units,
-              price_range,
-              rera_id,
-            } = projectData;
+            
       
             // Create a slug from the project name
-            const projectSlug = createSlug(name);
+            const projectSlug = createSlug(projectData.name);
       
       
             // Create the new project in the database
             const newProject = await this.project.create({
               
-              name,
-              slug: projectSlug,
-              description: description,
-              type,
-              status: status,
-              location: location,
-              start_date,
-              completion_date,
-              total_units,
-              price_range,
-              rera_id,
+              ...projectData,
+              slug:projectSlug
             });
       
             return newProject;
@@ -101,5 +81,24 @@ export class ProjectService {
 
 
 
+      public async changeVisibility(projectId:string , visibility:boolean){
+
+        const project = await this.project.findByPk(projectId);
+    
+        if (!project) {
+          throw new Error("Project not found");
+        }
+
+        if(project.is_public=== visibility){
+          throw new Error('NoUpdate')
+        }else{
+          project.is_public = visibility;
+          await project.save();
+
+          return project;
+
+        }
+    
+      }
 
 }

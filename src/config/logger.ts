@@ -28,7 +28,7 @@ const logger = winston.createLogger({
   transports,
   format: winston.format.combine(
     winston.format.timestamp(),
-    winston.format.logstash()
+    winston.format.json()
   ),
 });
 
