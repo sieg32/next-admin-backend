@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import Images from '../../models/projects/Image.model';
 import Project from '../../models/projects/project.model';
 import { ulid } from 'ulidx';
@@ -105,6 +105,62 @@ class FileService {
 
     return uploadedBrochures;
   }
+
+
+  public async deleteImages(imageKeys: string[]): Promise<{ deletedKeys: string[]; errors: string[] }> {
+    const deletedKeys: string[] = [];
+    const errors: string[] = [];
+
+    // Iterate over the array of image keys to delete them individually
+    await Promise.all(
+      imageKeys.map(async (key) => {
+        try {
+          // Delete the image from S3
+          const params = {
+            Bucket: this.bucketName,
+            Key: key,
+          };
+
+          const command = new DeleteObjectCommand(params);
+          await this.s3.send(command);
+
+          // Remove the image metadata from the database
+          const deletedRecord = await Images.destroy({ where: { file_name: key } });
+
+          if (deletedRecord > 0) {
+            deletedKeys.push(key);
+          } else {
+            errors.push(`No database record found for key: ${key}`);
+          }
+        } catch (error) {
+          errors.push(`Failed to delete key: ${key}. Error: ${error.message}`);
+        }
+      })
+    );
+
+    return { deletedKeys, errors };
+  }
+
+  public async deleteBrochure(brochureKey: string): Promise<{ success: boolean; error?: string }> {
+    try {
+      // Delete from S3
+      const params = {
+        Bucket: this.bucketName,
+        Key: brochureKey,
+      };
+
+      const command = new DeleteObjectCommand(params);
+      await this.s3.send(command);
+
+      // Delete from database
+      await Brochures.destroy({ where: { file_name: brochureKey } });
+
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: `Failed to delete brochure with key ${brochureKey}: ${error.message}` };
+    }
+  }
+
 }
 
 export default FileService;

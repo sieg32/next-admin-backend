@@ -12,11 +12,13 @@ import Amenities from '../models/projects/amenity.model';
 import { PropertyUnitService } from '../services/project/propertyUnit.service';
 import { AmenityService } from '../services/project/amenity.service';
 import AmenityList from '../models/amenityList.model';
+import { DeletionService } from '../services/project/deletion.service';
 
 const projectService = new ProjectService(Projects);
 const propertyUnitService = new PropertyUnitService(PropertyUnit, Projects)
 const fileService = new FileService(s3)
 const amenityService = new AmenityService();
+const deletionService = new DeletionService();
 
 
 export const getAllProjects = async (req: Request, res: Response):Promise<void > => {
@@ -322,3 +324,23 @@ export const updateVisibility = async(req: Request, res: Response):Promise<void>
     
   }
 }
+
+
+
+export const deleteProject = async(req: Request, res: Response):Promise<void> => {
+  const {projectId} = req.params;
+   try {
+    await deletionService.deleteProject(projectId); 
+    res.status(200).json({success:true, message:'successfully deleted'})  
+  } catch (error) {
+    if(error instanceof Error && error.message === 'NotFOund'){
+      res.status(404).json({success:false, message:'not found'})
+    }else{
+      res.status(500).json({success:false, message:'error occured while updating'})
+    }
+  }
+}
+
+
+
+

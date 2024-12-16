@@ -1,7 +1,7 @@
 // src/routes/project.routes.ts
 
 import { Router, Request, Response } from 'express';
-import {  addAmenityController, addBrochureController, addImages, addProjectText, addPropertyUnit, getAllProjects, getAmenityList, getProjectById, updateProjectTextInfo, updatePropertyUnit, updateVisibility } from '../controllers/project.controller';
+import {  addAmenityController, addBrochureController, addImages, addProjectText, addPropertyUnit, deleteProject, getAllProjects, getAmenityList, getProjectById, updateProjectTextInfo, updatePropertyUnit, updateVisibility } from '../controllers/project.controller';
 import upload from '../middlewares/multer.middleware';
 
 const router = Router();
@@ -31,6 +31,9 @@ router.post('/amenities/:projectId', addAmenityController);
 
 
 router.post('/visibility/:projectId', updateVisibility);
+
+router.delete('/:projectId', deleteProject)
+
 
 
 export default router;
