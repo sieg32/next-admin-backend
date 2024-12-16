@@ -7,10 +7,12 @@ module.exports = {
         interpreter: 'node', // Use the Node.js interpreter
         watch: false, // Disable PM2's watch to avoid conflicts with `tsx watch`
         env: {
-          NODE_ENV: 'development', // Development environment variables
+          NODE_ENV: 'development',
+          PORT: 4000, // Development environment variables
         },
         env_production: {
-          NODE_ENV: 'production', // Production environment variables
+          NODE_ENV: 'production',
+          PORT: 4000, // Production environment variables
         },
       },
     ],
