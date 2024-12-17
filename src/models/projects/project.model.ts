@@ -104,16 +104,27 @@ class Projects extends Model {
     max: number | null;
   };
 
-  @Column({
+    @Column({
     type: DataType.JSON,
     allowNull: true,
   })
   land_extra?: {
+    fencing:string|null;
+    position:string| null;
     approach: string | null;
     distance_from_orr: string | null;
     soil_type:string| null;
   };
 
+    @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  hotel_extra?: {
+    rental_yield:string|null;
+    accessibility:boolean|null;
+    additional_room:string|null;
+  };
  
 
   // Assuming images are stored as an array of URLs
@@ -128,19 +139,29 @@ class Projects extends Model {
     type:DataType.INTEGER,
     allowNull:true,
   })
-  Project_area?:number;
+  project_area?:number;
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
     allowNull: true,
   })
-  project_property?: number;
+  project_property?: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
+    defaultValue:'residential'
   })
   category?: string;
+
+  @Column({
+    type: DataType.TEXT,
+    allowNull: true,
+    
+  })
+  why_us?: string;
+
+ 
 
   @Column({
     type: DataType.STRING,

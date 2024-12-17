@@ -15,6 +15,19 @@ export type Coordinates = {
     min: number | null;
     max: number | null;
   };
+
+  export type LandExtra = {
+    fencing?:string|null;
+    position?:string| null;
+    approach?: string | null;
+    distance_from_orr?: string | null;
+    soil_type?:string| null;
+  }
+  export type HotelExtra = {
+    rental_yield?:string|null;
+    accessibility?:boolean|null;
+    additional_room?:string|null;
+  }
   
  export type ProjectDataText = {
     name: string;
@@ -24,24 +37,36 @@ export type Coordinates = {
     status?: string;
     location?: Location;
     start_date?: Date;
+    land_extra?:LandExtra;
+    hotel_extra?:HotelExtra;
     completion_date?: Date;
     total_units?: number;
+    project_area?:number;
+    project_property?:string;
     price_range?: PriceRange;
     rera_id?: string;
+    why_us?:string;
     
   };
   
 
 export type ProjectUpdateData = {
-  name?: string;
+  name: string;
+  type:'hotel'| 'land'| 'project';
+  category:string;
   description?: string;
   status?: string;
-  location?: object;
+  location?: Location;
   start_date?: Date;
+  land_extra?:LandExtra;
+  hotel_extra?:HotelExtra;
   completion_date?: Date;
   total_units?: number;
-  price_range?: object;
+  project_area?:number;
+  project_property?:string;
+  price_range?: PriceRange;
   rera_id?: string;
+  why_us?:string;
 }
 
 export type PropertyUnitData = {
