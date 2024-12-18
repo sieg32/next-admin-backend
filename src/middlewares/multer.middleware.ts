@@ -2,7 +2,7 @@ import multer, { FileFilterCallback } from 'multer';
 import { Request } from 'express';
 
 // File size limit in bytes (5MB in this example)
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 5MB
 
 // Multer storage configuration (memory storage for S3 upload)
 const storage = multer.memoryStorage();
