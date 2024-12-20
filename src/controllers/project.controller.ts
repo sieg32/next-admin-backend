@@ -24,7 +24,7 @@ const deletionService = new DeletionService();
 export const getAllProjects = async (req: Request, res: Response):Promise<void > => {
     try {
        
-        const data = await Projects.findAll({include:[Images, Brochures, PropertyUnit, Amenities]});
+        const data = await Projects.findAll({include:[Images, Brochures, PropertyUnit, Amenities], order:[['createdAt', 'DESC']]});
         res.status(200).json(data)
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
