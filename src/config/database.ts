@@ -8,6 +8,7 @@ import Brochures from "../models/projects/brochure.model";
 import PropertyUnit from "../models/projects/propertyUnit.model";
 import Amenities from "../models/projects/amenity.model";
 import AmenityList from "../models/amenityList.model";
+import Inquiry from "../models/inquiry.model";
 
 // Initialize Sequelize with your database connection details
 const sequelize_deals = new Sequelize("deals", config.db.USER, config.db.PASSWORD, {
@@ -19,7 +20,7 @@ const sequelize_deals = new Sequelize("deals", config.db.USER, config.db.PASSWOR
         acquire: 30000,
         idle: 10000
     },
-    models:[ Projects,PropertyUnit, Images,  Brochures, Amenities, AmenityList],
+    models:[ Projects,PropertyUnit, Images,  Brochures, Amenities, AmenityList, Inquiry],
     logging:(msg)=>{logger.info(msg)}
 });
 const sequelize_admin = new Sequelize("admin", config.db.USER, config.db.PASSWORD, {
