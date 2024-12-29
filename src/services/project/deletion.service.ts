@@ -3,6 +3,7 @@ import Brochure from "../../models/projects/brochure.model";
 import Images from "../../models/projects/Image.model";
 import Projects from "../../models/projects/project.model";
 import PropertyUnit from "../../models/projects/propertyUnit.model";
+import Remarks from '../../models/projects/remark.model'
 import s3 from '../../config/s3';
 import FileService from "./file.service";
 import logger from "../../config/logger";
@@ -41,6 +42,7 @@ export class DeletionService {
       // Delete related database records
       await Amenities.destroy({ where: { project_id: projectId } });
       await PropertyUnit.destroy({ where: { project_id: projectId } });
+      await Remarks.destroy({ where: { project_id: projectId } });
 
       // Delete the project
       await project.destroy();
