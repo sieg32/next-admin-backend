@@ -136,7 +136,7 @@ class Projects extends Model {
   rera_id?: string;
 
   @Column({
-    type:DataType.INTEGER,
+    type:DataType.FLOAT,
     allowNull:true,
   })
   project_area?:number;
