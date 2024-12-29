@@ -13,20 +13,24 @@ import { PropertyUnitService } from '../services/project/propertyUnit.service';
 import { AmenityService } from '../services/project/amenity.service';
 import AmenityList from '../models/amenityList.model';
 import { DeletionService } from '../services/project/deletion.service';
+import { RemarkService } from '../services/project/remark.service';
+import Remarks from '../models/projects/remark.model';
 
 const projectService = new ProjectService(Projects);
 const propertyUnitService = new PropertyUnitService(PropertyUnit, Projects)
 const fileService = new FileService(s3)
 const amenityService = new AmenityService();
 const deletionService = new DeletionService();
+const remarkSerive = new RemarkService();
 
 
 export const getAllProjects = async (req: Request, res: Response):Promise<void > => {
     try {
        
-        const data = await Projects.findAll({include:[Images, Brochures, PropertyUnit, Amenities], order:[['createdAt', 'DESC']]});
+        const data = await Projects.findAll({include:[Images, Brochures, PropertyUnit, Amenities, Remarks], order:[['createdAt', 'DESC']]});
         res.status(200).json(data)
     } catch (error) {
+      console.log(error)
         res.status(500).json({ error: 'Server error' });
     }
 }
@@ -343,4 +347,57 @@ export const deleteProject = async(req: Request, res: Response):Promise<void> =>
 
 
 
+export const createRemark = async (req:Request , res:Response)=>{
+  const {projectId, data} = req.body;
+
+  if(!data){
+    res.status(403).json({success:false, message:'please provide remark'});
+    return;
+  }
+try {
+  
+  const remark =await remarkSerive.createRemark(projectId, data);
+
+ 
+  res.status(201).json({success:true, message:'remark created', data:remark});
+} catch (error) {
+  console.log(error)
+  if(error.message === 'NotFound'){
+    res.status(404).json({success:false, message:'project not found'});
+
+  }else{
+    res.status(500).json({success:false, message:'something went wrong'})
+  }
+  
+}
+
+  
+}
+
+
+export const editRemark = async (req:Request , res:Response)=>{
+  const {projectId, data} = req.body;
+
+  if(!data){
+    res.status(403).json({success:false, message:'please provide remark'});
+    return;
+  }
+try {
+  
+  const remark =await remarkSerive.editRemark(projectId, data);
+
+  res.status(200).json({success:true, message:'remark edited', data:remark});
+} catch (error) {
+
+  if(error.message === 'NotFound'){
+    res.status(404).json({success:false, message:'project not found'});
+
+  }else{
+    res.status(500).json({success:false, message:'something went wrong'})
+  }
+  
+}
+
+  
+}
 

@@ -18,7 +18,7 @@ app.use("/api/v1/project", projectRouter);
 
 
 const start =async ()=>{
-  await sequelize_deals.sync();
+  await sequelize_deals.sync({});
   await sequelize_admin.sync();
   
   app.listen(config.PORT, () => {

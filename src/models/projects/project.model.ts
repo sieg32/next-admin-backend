@@ -4,6 +4,7 @@ import Amenities from './amenity.model';
 import Images from './Image.model';
 import PropertyUnit from './propertyUnit.model';
 import Brochure from './brochure.model';
+import Remarks from './remark.model';
 
 @Table({
   tableName: 'projects',
@@ -213,6 +214,9 @@ class Projects extends Model {
 
   @HasOne(()=>Brochure)
   brochure!:Brochure;
+
+  @HasOne(()=>Remarks)
+  remark!:Remarks;
   
 }
 
