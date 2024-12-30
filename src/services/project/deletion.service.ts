@@ -7,6 +7,7 @@ import Remarks from '../../models/projects/remark.model'
 import s3 from '../../config/s3';
 import FileService from "./file.service";
 import logger from "../../config/logger";
+import Inquiry from "../../models/inquiry.model";
 
 const fileService = new FileService(s3);
 
@@ -43,6 +44,8 @@ export class DeletionService {
       await Amenities.destroy({ where: { project_id: projectId } });
       await PropertyUnit.destroy({ where: { project_id: projectId } });
       await Remarks.destroy({ where: { project_id: projectId } });
+      await Inquiry.destroy({ where: { project_id: projectId } });
+     
 
       // Delete the project
       await project.destroy();
